@@ -20,7 +20,7 @@ public class AccountService {
         AccountRepository accountrepository;
         
 
-        public Account registerAccount(Account account) throws ClientErrorException, ConflictingResourceException
+        public Account registerAccount(Account account) throws ClientException, ConflictingResourceException
         {
             List<Account> accountList = accountrepository.findAll();
             for(Account acc: accountList)
@@ -33,7 +33,7 @@ public class AccountService {
 
             if((account.getUsername().length() < 1) || (account.getPassword().length()< 4))
             {
-                throw new ClientErrorException();
+                throw new ClientException();
             }
             
             return accountrepository.save(account);

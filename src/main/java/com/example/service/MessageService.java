@@ -12,11 +12,8 @@ import com.example.entity.Message;
 @Service
 public class MessageService {
 
+    @Autowired
     MessageRepository messageRepository;
 
-    @Autowired
-    public MessageService(MessageRepository mr)
-    {
-        messageRepository = mr;
-    }
+    
 }

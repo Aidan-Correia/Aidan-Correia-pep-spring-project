@@ -34,5 +34,13 @@ public class ExceptionController {
         return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("unauthorized");
     }
 
+    @ExceptionHandler(IllegalArgumentException.class)
+    @ResponseStatus(HttpStatus.OK)
+    public ResponseEntity IllegalArgumentHandler(IllegalArgumentException ex)
+    {
+        return ResponseEntity.status(HttpStatus.OK).body(null);
+    }
+
+
 
 }

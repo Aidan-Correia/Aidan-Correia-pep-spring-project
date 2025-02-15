@@ -40,4 +40,24 @@ public class AccountService {
 
         }
 
-}
+        public Account loginAccount(Account account) throws UnauthorizedException
+        {
+            List<Account> accountList = accountrepository.findAll();
+            if(accountList == null)
+            {
+                throw new UnauthorizedException();
+            }
+            for(Account acc: accountList)
+            {
+                if ((acc.getUsername().equals(account.getUsername()))&&(acc.getPassword().equals(account.getPassword())))
+                {
+                    return acc;
+                }
+            }
+
+            throw new UnauthorizedException();
+        }
+
+
+
+    }

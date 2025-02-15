@@ -36,61 +36,66 @@ public class SocialMediaController {
     
 
     @PostMapping("/register")
-    public ResponseEntity registerUser(@RequestBody Account account) throws ClientException, ConflictingResourceException
+    public ResponseEntity registerAccount(@RequestBody Account account) throws ClientException, ConflictingResourceException
     {
         Account addedAccount = accountservice.registerAccount(account);
         return ResponseEntity.status(200).body(addedAccount);
     }
 
 
-    //TODO
+    
     @PostMapping("/login")
-    public ResponseEntity loginUser(@RequestBody Account account) throws UnauthorizedException
+    public ResponseEntity loginAccount(@RequestBody Account account) throws UnauthorizedException
     {
-
-        return ResponseEntity.status(200).body();
+        Account foundAccount = accountservice.loginAccount(account);
+        return ResponseEntity.status(200).body(foundAccount);
     }
 
     @PostMapping("/messages")
     public ResponseEntity createMessage(@RequestBody Message message) throws ClientException
     {
-        
-        return ResponseEntity.status(200).body();
+        Message addedMessage = messageservice.createMessage(message);
+        return ResponseEntity.status(200).body(addedMessage);
     }
 
     @GetMapping("/messages")
     public ResponseEntity retrieveMessages()
     {
-        List<Message> messageList;
-        return ResponseEntity.status(200).body();
+        List<Message> messageList = messageservice.retrieveAllMessages();
+        return ResponseEntity.status(200).body(messageList);
     }
 
     @GetMapping("/messages/{messageId}")
     public ResponseEntity retrieveMessageById(@PathVariable Integer messageId)
     {
-        
-        return ResponseEntity.status(200).body();
+        Message returnedMessage = messageservice.retrieveMessageById(messageId);
+        return ResponseEntity.status(200).body(returnedMessage);
     }
 
     @DeleteMapping("/messages/{messageId}")
-    public ResponseEntity deleteMessage(@PathVariable Integer messageId)
+    public ResponseEntity deleteMessage(@PathVariable Integer messageId) throws IllegalArgumentException
     {
+        int numDeleted = messageservice.deleteMessageById(messageId.intValue());
+        if(numDeleted < 1)
+        {
+            return ResponseEntity.status(200).body(null);
+        }
+        return ResponseEntity.status(200).body(Integer.valueOf(numDeleted));
         
-        return ResponseEntity.status(200).body();
     }
 
     @PatchMapping("/messages/{messageId}")
-    public ResponseEntity updateMessage(@PathVariable Integer messageId)
+    public ResponseEntity updateMessage(@PathVariable("messageId") int messageId, @RequestBody Message newMessage) throws ClientException
     {
-        
-        return ResponseEntity.status(200).body();
+        int foundMessages = messageservice.updateMessageById(messageId, newMessage.getMessageText());
+        return ResponseEntity.status(200).body(foundMessages);
     }
 
     @GetMapping("/accounts/{accountId}/messages")
     public ResponseEntity retrieveMessagesByUser(@PathVariable Integer accountId)
     {
-        
-        return ResponseEntity.status(200).body();
+        List<Message> foundMessages = messageservice.retrieveMessagesByAccount(accountId);
+        return ResponseEntity.status(200).body(foundMessages);
     }
 
 
